@@ -1,29 +1,24 @@
-const Task = require('./models/tasks')
+const mongoose = require('./db.js');
+const taskController = require('./Controllers/taskController.js')
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
 const app = express();
 app.set('view engine', 'ejs')
 
-const mongoDB = "mongodb://localhost:27017/ToDoApp";
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
-    if (err)
-        console.error(err);
-    else
-        console.log("Connected to the mongodb"); 
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-
-const jsonParser = bodyParser.json()
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 app.listen(3000, () => {
     console.log("Server has started")
 });
 
-app.get('/', (req, res) => {
-    res.render('index');
-    console.log('Server is Online!');
-});
+app.use('/', taskController);
+
+// app.get('/', (req, res) => {
+//     res.render('index');
+//     console.log('Server is Online!');
+// });
 
